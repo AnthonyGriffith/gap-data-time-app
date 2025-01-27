@@ -1,0 +1,35 @@
+# create a deployment resource for kubernetes
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails-deployment
+  template:
+    metadata:
+      labels:
+        app: rails-deployment
+    spec:
+      containers:
+      - name: rails-app
+        image: date-time-app
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        command: ["bundle", "exec", "rails", "server", "-p", "3000", "-b", "0.0.0.0"]
+
+        env:
+          - name: MARIADB_ROOT_PASSWORD
+            value: MysqlRootPassword
+          - name: MARIADB_DATABASE
+            value: myappdb
+          - name: MARIADB_USER
+            value: myapp
+          - name: MARIADB_PASSWORD
+            value: MysqlRootPassword
+          - name: MARIADB_MYSQL_LOCALHOST_USER
+            value: "1"
